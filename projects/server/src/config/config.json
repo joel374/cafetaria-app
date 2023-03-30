@@ -1,9 +1,9 @@
 {
   "development": {
-    "username": "root",
-    "password": "password",
-    "database": "cafetaria_app",
-    "host": "127.0.0.1",
+    "username": "cafetaria",
+    "password": "cafetaria123",
+    "database": "cafetaria",
+    "host": "db4free.net",
     "dialect": "mysql",
     "logging": false
   },

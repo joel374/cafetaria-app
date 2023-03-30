@@ -43,6 +43,26 @@ const userController = {
       return res.status(500).json({ message: "Server error" })
     }
   },
+  refreshToken: async (req, res) => {
+    try {
+      const findUserById = await User.findByPk(req.user.id)
+
+      const renewedToken = signToken({
+        id: req.user.id,
+      })
+
+      return res.status(200).json({
+        message: "Renewed user token",
+        data: findUserById,
+        token: renewedToken,
+      })
+    } catch (err) {
+      console.log(err)
+      return res.status(500).json({
+        message: "Server error",
+      })
+    }
+  },
 }
 
 module.exports = userController
