@@ -2,27 +2,21 @@ import {
   Box,
   Button,
   FormControl,
-  FormErrorMessage,
-  FormLabel,
-  Grid,
   Image,
   Input,
   Modal,
   ModalBody,
   ModalCloseButton,
   ModalContent,
-  ModalHeader,
   ModalOverlay,
   Textarea,
   useToast,
-} from "@chakra-ui/react"
-import { useFormik } from "formik"
-import { useSelector } from "react-redux"
-import { axiosInstance } from "../api"
+} from "@chakra-ui/react";
+import { useFormik } from "formik";
+import { axiosInstance } from "../api";
 
 const ModalMenu = ({ isOpen, onClose, onOpen, val }) => {
-  const toast = useToast()
-  //   const authSelector = useSelector((state) => state.auth)
+  const toast = useToast();
 
   const formik = useFormik({
     initialValues: {
@@ -34,31 +28,32 @@ const ModalMenu = ({ isOpen, onClose, onOpen, val }) => {
       try {
         const response = await axiosInstance.post("order/createOrder", {
           MenuId: val?.id,
-          notes: "oke",
-          quantity: 1,
-          table_number: 12,
-        })
+          notes,
+          quantity,
+          table_number,
+        });
 
+        onClose();
         toast({
           message: "Order created",
           status: "success",
           description: response.data.message,
-        })
+        });
       } catch (error) {
-        console.log(error)
+        console.log(error);
         toast({
           title: "Error",
           description: error.response.data.message,
           status: "error",
-        })
+        });
       }
     },
-  })
+  });
 
   const formChangeHandler = ({ target }) => {
-    const { name, value } = target
-    formik.setFieldValue(name, value)
-  }
+    const { name, value } = target;
+    formik.setFieldValue(name, value);
+  };
   return (
     <Modal
       isOpen={isOpen}
@@ -79,12 +74,7 @@ const ModalMenu = ({ isOpen, onClose, onOpen, val }) => {
       >
         <ModalCloseButton _hover={false} />
 
-        <ModalBody
-          overflowY={"scroll"}
-          maxH="529px"
-          p={"16px"}
-          fontSize={"14px"}
-        >
+        <ModalBody maxH="529px" p={"16px"} fontSize={"14px"}>
           <form onSubmit={formik.handleSubmit}>
             <Box display={"flex"} gap="4">
               <Image
@@ -104,6 +94,7 @@ const ModalMenu = ({ isOpen, onClose, onOpen, val }) => {
                       mt="2"
                       placeholder="Quantity"
                       size={"sm"}
+                      name="quantity"
                       value={formik.values.quantity}
                       onChange={formChangeHandler}
                       type="number"
@@ -113,6 +104,7 @@ const ModalMenu = ({ isOpen, onClose, onOpen, val }) => {
                     <Input
                       mt="2"
                       placeholder="Table Number"
+                      name="table_number"
                       value={formik.values.table_number}
                       onChange={formChangeHandler}
                       size={"sm"}
@@ -125,7 +117,8 @@ const ModalMenu = ({ isOpen, onClose, onOpen, val }) => {
                     placeholder="Notes"
                     size={"sm"}
                     value={formik.values.notes}
-                    //   onChange={formChangeHandler}
+                    onChange={formChangeHandler}
+                    name="notes"
                     resize="none"
                     mt="4"
                   />
@@ -143,7 +136,6 @@ const ModalMenu = ({ isOpen, onClose, onOpen, val }) => {
                 _active={false}
                 bgColor="burlywood"
                 type="submit"
-                // onClick={formik.handleSubmit}
               >
                 Order
               </Button>
@@ -152,7 +144,7 @@ const ModalMenu = ({ isOpen, onClose, onOpen, val }) => {
         </ModalBody>
       </ModalContent>
     </Modal>
-  )
-}
+  );
+};
 
-export default ModalMenu
+export default ModalMenu;

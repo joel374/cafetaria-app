@@ -1,20 +1,20 @@
-import { Box, Button, Text, useToast } from "@chakra-ui/react"
-import { FcGoogle } from "react-icons/fc"
-import GoogleLogin from "react-google-login"
-import { axiosInstance } from "../../api"
-import { useDispatch } from "react-redux"
-import { login } from "../../redux/features/authSlice"
-import { useNavigate } from "react-router-dom"
-import { useEffect } from "react"
-import { gapi } from "gapi-script"
+import { Box, Button, Text, useToast } from "@chakra-ui/react";
+import { FcGoogle } from "react-icons/fc";
+import GoogleLogin from "react-google-login";
+import { axiosInstance } from "../../api";
+import { useDispatch } from "react-redux";
+import { login } from "../../redux/features/authSlice";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { gapi } from "gapi-script";
 
 const clientId =
-  "107570705256-s408n1mll02e6fdjpf632l4iqcbft779.apps.googleusercontent.com"
+  "107570705256-s408n1mll02e6fdjpf632l4iqcbft779.apps.googleusercontent.com";
 
 const Login = () => {
-  const toast = useToast()
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
+  const toast = useToast();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   //   login google
   const onSuccess = async (res) => {
@@ -22,45 +22,42 @@ const Login = () => {
       const response = await axiosInstance.post("/user/login", {
         username: res.profileObj.name,
         email: res.profileObj.email,
-      })
+      });
 
       toast({
         title: "Login Succesful",
         status: "success",
         description: response.data.message,
-      })
+      });
 
-      localStorage.setItem("auth_token", response.data.token)
+      localStorage.setItem("auth_token", response.data.token);
       dispatch(
         login({
           id: response.data.data.id,
-          RoleId: response.data.data.RoleId,
           email: response.data.data.email,
           username: response.data.data.username,
-          phone_number: response.data.data.phone_number,
           profile_picture: response.data.data.profile_picture,
-          is_verify: response.data.data.is_verify,
-          WarehouseId: response?.data.data.WarehouseId,
+          is_admin: response.data.data.is_admin,
         })
-      )
-      navigate("/")
+      );
+      navigate("/");
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
   const onFailure = (err) => {
-    console.log(err)
-  }
+    console.log(err);
+  };
 
   useEffect(() => {
     const start = () => {
       gapi.client.init({
         clientId: clientId,
         scope: "",
-      })
-    }
-    gapi.load("client:auth2", start)
-  }, [])
+      });
+    };
+    gapi.load("client:auth2", start);
+  }, []);
 
   return (
     <Box
@@ -112,6 +109,6 @@ const Login = () => {
         />
       </Box>
     </Box>
-  )
-}
-export default Login
+  );
+};
+export default Login;

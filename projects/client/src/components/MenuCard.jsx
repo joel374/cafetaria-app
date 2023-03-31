@@ -1,6 +1,6 @@
-import { Box, Button, Image } from "@chakra-ui/react"
+import { Box, Button, Image } from "@chakra-ui/react";
 
-const MenuItem = ({ image_url, menu_name, price, onClick }) => {
+const MenuCard = ({ image_url, menu_name, price, onClick }) => {
   return (
     <Box
       borderRadius={"8px"}
@@ -10,7 +10,7 @@ const MenuItem = ({ image_url, menu_name, price, onClick }) => {
     >
       <Image
         borderTopRadius={"8px"}
-        src={`http://localhost:8000/public/${image_url}`}
+        src={image_url}
         objectFit={"cover"}
         objectPosition={"center"}
       />
@@ -36,6 +36,6 @@ const MenuItem = ({ image_url, menu_name, price, onClick }) => {
         </Button>
       </Box>
     </Box>
-  )
-}
-export default MenuItem
+  );
+};
+export default MenuCard;
